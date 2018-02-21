@@ -2,3 +2,17 @@
 2. clear 变量可以清除其存储信息
 3. 存储变量到硬盘中 save 路径文件名 变量名 默认是二进制形式，如果需要明文，save 路径 变量 -ascii
 4. 从磁盘加载文件 load 文件名
+5. prod(a) 计算元素数组的乘积
+6. [Row, Column]= find(A >= 7)查找矩阵中元素大于等于7的索引位置
+7. C = max(A,B)
+返回一个和A和B同大小的数组，其中的元素是从A或B中取出的最大元素。
+8.max(A,[],dim)：dim取1或2。dim取1时，该函数和max(A)完全相同；dim取2时，该函数返回一个列向量，其第i个元素是A矩阵的第i行上的最大值。
+9. 1特指列，返回1*N， 2特指行，返回M*1
+10. sum(向量)为一个标量，所有元素相加和， sum(非向量)按照9原则计算
+11.绘制图形,plot,例如 t = [0.01:0.1:0.98], y1 = sin(2* pi * t), y2 = cos(2 * pi * t)
+plot(t, y1); hold on; plot(t, y2, 'r'); xlable(‘x轴’); ylable(‘y轴’); legend('sin', 'cos'); title('标题');
+保存 print -dpng 'test.png'; 关闭图像close
+12.绘制多张图像 figure(1); plot(t, y1);   figure(2); plot(t, y2)
+13.subplot(1,2, 1) %%意思是绘制一个1*2的格子，现在使用第一个格子， 更改x,y坐标范围, axis([0.5 1 -1 1])
+14. clf清除图像
+15. 控制语句以及函数的定义
