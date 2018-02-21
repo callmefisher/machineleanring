@@ -15,4 +15,28 @@ plot(t, y1); hold on; plot(t, y2, 'r'); xlable(‘x轴’); ylable(‘y轴’); 
 12.绘制多张图像 figure(1); plot(t, y1);   figure(2); plot(t, y2)
 13.subplot(1,2, 1) %%意思是绘制一个1*2的格子，现在使用第一个格子， 更改x,y坐标范围, axis([0.5 1 -1 1])
 14. clf清除图像
-15. 控制语句以及函数的定义
+15. 控制语句
+例如 v = zeros(10, 1) (10 * 1的零向量)
+for i=1:10，
+ v(i) = 2 ^ i;
+end;
+
+i = 1
+while i < 10,
+ v(i) = 2 ^ i;
+ i = i + 1;
+ if i == 6,
+    break;
+ elseif i == 5,
+     disp("hehe");
+ else
+     continue;       
+  end;
+end;
+
+16. 函数的定义,调用
+新建一个文件.m，文件名就是函数名，
+function [y1, y2] = squareNum(x)
+y1 = x ^ 2;
+y2 = x ^ 3;
+
