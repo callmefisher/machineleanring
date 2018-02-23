@@ -15,6 +15,7 @@ J = 0;
 Transtheta = theta';
 ThetaLen = length(Transtheta);
 FinalSum = 0;
+fprintf("X ");
 for i=1:m
    for j = 1:ThetaLen
     TmpInnerSum = 0;
