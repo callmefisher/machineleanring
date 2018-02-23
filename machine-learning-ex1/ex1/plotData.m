@@ -2,7 +2,6 @@ function plotData(x, y)
 %PLOTDATA Plots the data points x and y into a new figure 
 %   PLOTDATA(x,y) plots the data points and gives the figure axes labels of
 %   population and profit.
-
 figure; % open a new figure window
 
 % ====================== YOUR CODE HERE ======================
@@ -18,9 +17,9 @@ figure; % open a new figure window
 %%plot(x, y,  'Marker', '.')
 plot(x, y,   '.', 'MarkerEdgeColor', 'r');
 
-xlabel("Population(万)")
-ylabel("Profit(万美元)")
-title("人口与利润")
+xlabel('Population(万)')
+ylabel('Profit(万美元)')
+title('人口与利润')
 
 % ============================================================
 
