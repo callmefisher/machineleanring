@@ -17,7 +17,7 @@ FinalSum = 0;
 DesignX = X';
 %%[XColume, XLine] = size(DesignX);
 %%[ThetaColm, ThetaLine] = size(Transtheta);
-%%fprintf("特征矩阵X (Colume:%d  Line:%d), 样本数量:%d Theta矩阵(Colume:%d  Line:%d)\n", XColume, XLine, m, ThetaColm, ThetaLine);
+%%fprintf("特征矩阵X (Colume:%d  Line:%d) 样本数量:%d Theta矩阵(Colume:%d  Line:%d)\n", XColume, XLine, m, ThetaColm, ThetaLine);
 for i=1:m
    TmpInnerSum = 0;
    for j = 1:ThetaLen
