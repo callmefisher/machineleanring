@@ -7,14 +7,7 @@ function [theta, J_history] = gradientDescent(X, y, theta, alpha, num_iters)
 m = length(y); % number of training examples
 J_history = zeros(num_iters, 1);
 
-% NormalX = X(:,2);
-% X1 = (X - mean(X)) ./ ( max(X) - min(X));
-% y = (y - mean(y)) ./ (max(y) - min(y));
-% X = [ones(m, 1), X1(:,2)];
-
-
 Transtheta = theta';  %% 1 * N
-
 TransDesignX = X';          %% N * M  (N 是特征数目 M是训练样本个数)
 ThetaLines =  length(Transtheta);
 
