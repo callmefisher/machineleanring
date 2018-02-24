@@ -7,15 +7,16 @@ function [theta, J_history] = gradientDescent(X, y, theta, alpha, num_iters)
 m = length(y); % number of training examples
 J_history = zeros(num_iters, 1);
 
-%%NormalX = X(:,2);
-%%X1 = (NormalX - mean(NormalX)) ./ ( max(NormalX) - min(NormalX));
-%%y = (y - mean(y)) ./ (max(y) - min(y));
-%%X = [ones(m, 1), X1];
+% NormalX = X(:,2);
+% X1 = (X - mean(X)) ./ ( max(X) - min(X));
+% y = (y - mean(y)) ./ (max(y) - min(y));
+% X = [ones(m, 1), X1(:,2)];
 
 
-%%Transtheta = theta';  %% 1 * N
+Transtheta = theta';  %% 1 * N
 
-%%TransDesignX = X';          %% N * M  (N 是特征数目 M是训练样本个数)
+TransDesignX = X';          %% N * M  (N 是特征数目 M是训练样本个数)
+ThetaLines =  length(Transtheta);
 
 for iter = 1:num_iters
 
@@ -26,26 +27,23 @@ for iter = 1:num_iters
     % Hint: While debugging, it can be useful to print out the values
     %       of the cost function (computeCost) and gradient here.
     %
-%     FinalSum = 0;
-%     for j = 1:ThetaLines
-%        
-%         for i = 1:m
-%             TmpInnerSum = 0;
-%             for featureCount = 1:ThetaLines
-%                 TmpInnerSum = TmpInnerSum + Transtheta(1, featureCount) * TransDesignX(featureCount, i);
-%             end
-%              FinalSum = FinalSum + (TmpInnerSum - y(i,1)) * X(i, j) ; 
-%         end
-%         Transtheta( 1, j) = Transtheta( 1, j) -  alpha * FinalSum / m;
-%     end
+    tempTheta = Transtheta;
+    for j = 1:ThetaLines
+        FinalSum = 0;
+        for i = 1:m
+            TmpInnerSum = 0;
+            for featureCount = 1:ThetaLines
+                TmpInnerSum = TmpInnerSum + tempTheta(1, featureCount) * TransDesignX(featureCount, i);
+            end
+             FinalSum = FinalSum + (TmpInnerSum - y(i,1)) * X(i, j) ; 
+        end
+        Transtheta( 1, j) = tempTheta( 1, j) -  alpha * FinalSum / m;
+    end
 
-   tempTheta = theta; %save the theta from last iteration
-
-    % Update for theta0
-    theta(1) = tempTheta(1) - alpha / m * sum(X * tempTheta - y);
-
-    % Update for theta1
-    theta(2) = tempTheta(2) - alpha / m * sum((X * tempTheta - y) .* X(:,2));
+    % Update for theta0 theta1
+%     tempTheta = theta; %save the theta from last iteration
+%     theta(1) = tempTheta(1) - alpha * sum( (X * tempTheta - y) .* X(:,1) )  / m  ;
+%     theta(2) = tempTheta(2) - alpha * sum((X * tempTheta - y) .* X(:,2) ) / m ;
     % ============================================================
 
     % Save the cost J in every iteration    
@@ -53,6 +51,6 @@ for iter = 1:num_iters
 
 end
 
-  %%theta = Transtheta';
+  theta = Transtheta';
 
 end
