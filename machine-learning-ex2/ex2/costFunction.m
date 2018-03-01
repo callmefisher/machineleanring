@@ -24,33 +24,70 @@ TransX = X';
 %
 ThetaJParaCount = FeatureCount ;
 Alpha = 0.01;
-for iter =1:1500
-    
-    tempTheta = TransTheta;
-    for thetaJ = 1:ThetaJParaCount      
 
-        for i = 1:m
-            TmpInnerSum1 = 0;
-            for thetaInsideJ = 1:ThetaJParaCount
-                TmpInnerSum0 =  tempTheta(1, thetaInsideJ) * TransX(thetaInsideJ, i);
-            end
-             TmpInnerSum1 = TmpInnerSum1 + (log2(1 / (1 + exp(-TmpInnerSum0)) ) - y(i)) * X(i, thetaInsideJ) ;
+
+
+
+
+
+
+%% 求Theta向量
+
+% for iter =1:15000
+%     
+%     tempTheta = TransTheta;
+%     for thetaJ = 1:ThetaJParaCount      
+%         FinalSum = 0;
+%         for i = 1:m
+%             TmpHx = 0;
+%             for thetaInsideJ = 1:ThetaJParaCount
+%                 TmpHx = TmpHx + tempTheta(1, thetaInsideJ) * TransX(thetaInsideJ, i);
+%             end
+%             gHx =  1 / (1 + exp(-TmpHx)) ;
+%              FinalSum = FinalSum + (gHx - y(i)) * X(i, thetaJ) ;
+%         end
+%         DerivedNum = Alpha * FinalSum / m;
+%         TransTheta( 1, thetaJ) = tempTheta( 1, thetaJ) -   DerivedNum;     
+%     end
+% end
+
+
+% 求梯度
+for thetaJ = 1:ThetaJParaCount
+    FinalSum = 0;
+    for i = 1:m
+        TmpHx = 0;
+        for thetaInsideJ = 1:ThetaJParaCount
+            TmpHx = TmpHx + TransTheta(1, thetaInsideJ) * TransX(thetaInsideJ, i);
         end
-        TransTheta( 1, thetaJ) = tempTheta( 1, thetaJ) -  Alpha * TmpInnerSum1 / m;
-    end 
+        gHx =  1 / (1 + exp(-TmpHx)) ;
+        FinalSum = FinalSum + (gHx - y(i)) * X(i, thetaJ) ;
+    end
+    DerivedNum = FinalSum / m;
+    grad(thetaJ) = DerivedNum;
 end
 
 
-TotalJ1 = 0;
+
+%% 求Cost Function
+FinalSum = 0;
 for i = 1:m
-    TmpInnerSum1 = 0;
-   for featureJ = 1:FeatureCount
-       TmpInnerSum0 =  TmpInnerSum0 + TransTheta(1, featureJ) * TransX(featureJ, i);
-       TmpInnerSum1 = 1 / (1 + exp(-TmpInnerSum0));
-   end
-   TotalJ1 = TotalJ1 + log2(TmpInnerSum1) * y(i) + (1 - y(i)) * log2(1- TmpInnerSum1);
+    TmpHx = 0;
+    for thetaInsideJ = 1:ThetaJParaCount
+        TmpHx = TmpHx + TransTheta(1, thetaInsideJ) * TransX(thetaInsideJ, i);
+    end
+    gHx =  1 / (1 + exp(-TmpHx));
+    LogHx =  y(i) * log(gHx) + (1 - y(i)) * log(1 - gHx);
+    FinalSum = FinalSum + LogHx ;
 end
-J = -TotalJ1 / m;
+
+J = -FinalSum/m;
+
+
+
+
+
+
 
 %hθ(x) = g(z) = 1/1 + e^?z;
 %J(θ) = -1/m( y(i) log(hθ(x(i))) + (1 ? y(i)) log(1 ? hθ(x(i))))
