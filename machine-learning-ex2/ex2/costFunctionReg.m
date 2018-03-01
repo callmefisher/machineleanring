@@ -17,9 +17,50 @@ grad = zeros(size(theta));
 %               Compute the partial derivatives and set grad to the partial
 %               derivatives of the cost w.r.t. each parameter in theta
 
+grad = zeros(size(theta));
+TransTheta = theta';
+TransX = X';
+ThetaJParaCount = size(X, 2);
+
+%计算lamta/2m * (ThetaJ^2)
+FinalThetaJ = 0;
+for j = 1:ThetaJParaCount
+    FinalThetaJ = FinalThetaJ + theta(j) * theta(j);
+end
+
+% 求梯度
+for thetaJ = 1:ThetaJParaCount
+    FinalSum = 0;
+    for i = 1:m
+        TmpHx = 0;
+        for thetaInsideJ = 1:ThetaJParaCount
+            TmpHx = TmpHx + TransTheta(1, thetaInsideJ) * TransX(thetaInsideJ, i);
+        end
+        gHx =  1 / (1 + exp(-TmpHx)) ;
+        FinalSum = FinalSum + (gHx - y(i)) * X(i, thetaJ) ;
+    end
+    DerivedNum = FinalSum / m + lambda * theta(thetaJ) / m;
+    grad(thetaJ) = DerivedNum;
+end
 
 
 
+%% 求Cost Function
+FinalSum = 0;
+for i = 1:m
+    TmpHx = 0;
+    for thetaInsideJ = 1:ThetaJParaCount
+        TmpHx = TmpHx + TransTheta(1, thetaInsideJ) * TransX(thetaInsideJ, i);
+    end
+    gHx =  1 / (1 + exp(-TmpHx));
+    LogHx =  y(i) * log(gHx) + (1 - y(i)) * log(1 - gHx);
+    FinalSum = FinalSum + LogHx ;
+end
+
+
+
+
+J = -FinalSum/m + lambda * FinalThetaJ/ 2 * m;
 
 
 % =============================================================

@@ -14,7 +14,16 @@ p = zeros(m, 1);
 %               your learned logistic regression parameters. 
 %               You should set p to a vector of 0's and 1's
 %
-
+TransX = X';
+TransTheta = theta';
+FeatureCount = size(X, 2);
+for i = 1:m
+    TmpHx = 0;
+    for j = 1:FeatureCount
+     TmpHx = TmpHx + TransTheta(1, j) * TransX(j, i);
+    end
+    p(i) = (TmpHx >= 0);
+end
 
 
 
