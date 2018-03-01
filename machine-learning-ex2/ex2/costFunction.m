@@ -23,7 +23,7 @@ TransX = X';
 % Note: grad should have the same dimensions as theta
 %
 ThetaJParaCount = FeatureCount ;
-Alpha = 0.01;
+
 
 
 
@@ -32,7 +32,7 @@ Alpha = 0.01;
 
 
 %% 求Theta向量
-
+%% Alpha = 0.01;
 % for iter =1:15000
 %     
 %     tempTheta = TransTheta;
@@ -86,7 +86,9 @@ J = -FinalSum/m;
 
 
 
-
+%% 向量化的方案
+%J = (-1 / m) * (y' * log(sigmoid(X * theta)) + (1-y)' * log(1 - sigmoid(X*theta)));
+%grad = (1 / m) * X' * (sigmoid(X * theta) - y);
 
 
 %hθ(x) = g(z) = 1/1 + e^?z;
