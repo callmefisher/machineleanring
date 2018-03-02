@@ -11,7 +11,7 @@ theta = zeros(size(X, 2), 1);
 %
 
 % ---------------------- Sample Solution ----------------------
-
+% 逆矩阵(X转置'*X) * X转置 * y向量
 theta = pinv(X'*X)*X'*y
 
 
