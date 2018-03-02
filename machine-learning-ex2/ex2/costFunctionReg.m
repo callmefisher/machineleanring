@@ -23,12 +23,9 @@ TransX = X';
 ThetaJParaCount = size(X, 2);
 
 %计算lamta/2m * (ThetaJ^2)
-FinalThetaJ = 0;
-for j = 1:ThetaJParaCount
-    FinalThetaJ = FinalThetaJ + theta(j) * theta(j);
-end
 
-% 求梯度
+
+% 求带lamda参数的梯度
 for thetaJ = 1:ThetaJParaCount
     FinalSum = 0;
     for i = 1:m
@@ -39,11 +36,20 @@ for thetaJ = 1:ThetaJParaCount
         gHx =  1 / (1 + exp(-TmpHx)) ;
         FinalSum = FinalSum + (gHx - y(i)) * X(i, thetaJ) ;
     end
-    DerivedNum = FinalSum / m + lambda * theta(thetaJ) / m;
-    grad(thetaJ) = DerivedNum;
+    
+    if thetaJ == 1
+        grad(thetaJ) = FinalSum / m ;
+    else
+        grad(thetaJ) = FinalSum / m + lambda * theta(thetaJ) / m;
+    end
+    
+    
 end
 
-
+FinalThetaJ = 0;
+for j = 2:ThetaJParaCount
+    FinalThetaJ = FinalThetaJ + theta(j) * theta(j);
+end
 
 %% 求Cost Function
 FinalSum = 0;
@@ -60,7 +66,7 @@ end
 
 
 
-J = -FinalSum/m + lambda * FinalThetaJ/ 2 * m;
+J = -FinalSum/m + lambda * FinalThetaJ/ (2 * m);
 
 
 % =============================================================
