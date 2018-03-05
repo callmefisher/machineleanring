@@ -12,11 +12,11 @@ m = size(X, 1);
 n = size(X, 2);
 
 % You need to return the following variables correctly 
-all_theta = zeros(num_labels, n + 1);
+all_theta = zeros(num_labels, n + 1);   % Theta的维度 = 分类器的个数 * (特征数量 + 1)
 
 % Add ones to the X data matrix
 X = [ones(m, 1) X];
-
+Classfiers = num_labels;
 % ====================== YOUR CODE HERE ======================
 % Instructions: You should complete the following code to train num_labels
 %               logistic regression classifiers with regularization
@@ -49,6 +49,45 @@ X = [ones(m, 1) X];
 %                 initial_theta, options);
 %
 
+TransX = X';
+Alpha = 0.01;
+for i = 1:Classfiers
+
+   % TmpRightOutputY = y(i, :);
+    TmpTransTheta0 = all_theta(i, :);
+    %TmpTransTheta0 = TmpSaveTheta';
+
+    ThetaJParaCount = size(TmpTransTheta0, 2);
+    
+    %% 迭代一定次数,求出
+    for iter = 1:3
+        
+        TmpTransTheta1 = TmpTransTheta0;
+        for thetaJ = 1:ThetaJParaCount
+            FinalSum = 0;
+            for example = 1:m
+                TmpHx = 0;
+                for thetaInsideJ = 1:ThetaJParaCount
+                    TmpHx = TmpHx + TmpTransTheta1(1, thetaInsideJ) * TransX(thetaInsideJ, example);
+                end
+                gHx =  1 / (1 + exp(-TmpHx)) ;
+                FinalSum = FinalSum + (gHx - y(example, 1 )) * X(example, thetaJ) ;
+            end
+            
+            if thetaJ == 1 
+                TmpTransTheta0(1, thetaJ) = TmpTransTheta1(1, thetaJ) - Alpha * FinalSum / m;
+            else
+                TmpTransTheta0(1, thetaJ) = TmpTransTheta1(1, thetaJ) - Alpha * FinalSum / m - lambda * TmpTransTheta1(1, thetaJ) / m;
+            end    
+        end  
+    end
+    
+     all_theta(i, :) = TmpTransTheta0';
+    
+     
+
+    
+end
 
 
 
