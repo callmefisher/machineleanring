@@ -8,7 +8,8 @@ m = size(X, 1);
 num_labels = size(Theta2, 1);
 
 % You need to return the following variables correctly 
-p = zeros(size(X, 1), 1);
+p = zeros(size(X, 1), 1); % X=5000(样本) * 400(个特征)    Theta2=10 * 26 Theta1= 25 * 401
+X = [ones(m, 1) X];
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: Complete the following code to make predictions using
@@ -21,6 +22,17 @@ p = zeros(size(X, 1), 1);
 %       can use max(A, [], 2) to obtain the max for each row.
 %
 
+for i = 1:m 
+    
+    A1 =    X(i,:);
+    G2 = sigmoid( A1 * Theta1'); 
+    
+    BiasUnitG2 = [1 G2];
+    G3 = sigmoid(BiasUnitG2 * Theta2');
+    
+    [possiblity, Classfier] = max(G3)
+    p(i) = Classfier;
+end
 
 
 
