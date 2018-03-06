@@ -13,6 +13,7 @@ num_labels = size(all_theta, 1);
 
 % You need to return the following variables correctly 
 p = zeros(size(X, 1), 1);
+p2 = zeros(size(X, 1), num_labels);
 
 % Add ones to the X data matrix
 X = [ones(m, 1) X];
@@ -33,22 +34,24 @@ X = [ones(m, 1) X];
 %       
 
 % theta = 10 * 401  X =  5000 * 401
+
 for numLable = 1:num_labels
    theta = all_theta(numLable, :);
    for i=1:M
       TmpSum = 0;
        for j = 1:N
-           TmpSum = TmpSum + theta(1, j) * X(M, j);
+           TmpSum = TmpSum + theta(1, j) * X(i, j);
        end
-       p(i, numLable) = 1 / exp(-TmpSum);
+       p2( numLable, i ) = 1/ (1 + exp(-TmpSum));
    end
-   p = max(p, [], 2);
 end
 
+[probality, classfier] = max(p2, [], 1);  %% 2 每行选一个
+p = classfier';
 
 
-
-
+% [c,i] = max(sigmoid(X * all_theta'), [], 2);
+% p = i;
 
 
 

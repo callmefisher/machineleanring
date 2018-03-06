@@ -60,7 +60,7 @@ for i = 1:Classfiers
     ThetaJParaCount = size(TmpTransTheta0, 2);
     
     %% 迭代一定次数,求出
-    for iter = 1:3
+    for iter = 1:500
         
         TmpTransTheta1 = TmpTransTheta0;
         for thetaJ = 1:ThetaJParaCount
@@ -91,7 +91,21 @@ end
 
 
 
-
+ %     options = optimset('GradObj', 'on', 'MaxIter', 50);
+% 
+%     % Run fmincg to obtain the optimal theta
+%     % This function will return theta and the cost 
+%     [theta] = ...
+%         fmincg (@(t)(lrCostFunction(t, X, (y == c), lambda)), ...
+%                 initial_theta, options);
+%
+% 
+% for i = 1:num_labels
+%     [theta] = ...
+%         fmincg(@(t)(lrCostFunction(t,X,(y == i),lambda)), ...
+%             initial_theta, options);
+%     all_theta(i,:) = theta';
+% end
 
 
 
