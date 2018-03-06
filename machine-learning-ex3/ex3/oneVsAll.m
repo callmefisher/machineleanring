@@ -49,63 +49,61 @@ Classfiers = num_labels;
 %                 initial_theta, options);
 %
 
-TransX = X';
+
+% Lamda = eye(n + 1, 3);
+% for i = 1:n + 1
+%     for j = 1:n+1
+%         if i == j
+%             Lamda(i, j) = lambda;
+%             break;
+%         end
+%     end
+% end
+%  all_theta = pinv(X'*X + Lamda) * X' * y;
+%  all_theta = all_theta';
+
 Alpha = 0.01;
 for i = 1:Classfiers
 
-   % TmpRightOutputY = y(i, :);
-    TmpTransTheta0 = all_theta(i, :);
-    %TmpTransTheta0 = TmpSaveTheta';
-
-    ThetaJParaCount = size(TmpTransTheta0, 2);
-    
-    %% 迭代一定次数,求出
-    for iter = 1:500
+%     TmpTransTheta0 = all_theta(i, :);
+%     ThetaJParaCount = size(TmpTransTheta0, 2);
+%     
+%     for iter = 1:500
+%         
+%         TmpTransTheta1 = TmpTransTheta0;
+%         for thetaJ = 1:ThetaJParaCount
+%             FinalSum = 0;
+%             for example = 1:m
+%                 TmpHx = 0;
+%                 for thetaInsideJ = 1:ThetaJParaCount
+%                     TmpHx = TmpHx + TmpTransTheta1(1, thetaInsideJ) * X(example, thetaInsideJ);
+%                 end
+%                 gHx =  1 / (1 + exp(-TmpHx)) ;
+%                 FinalSum = FinalSum + (gHx - y(example, 1 )) * X(example, thetaJ) ;
+%             end
+%             
+%             if thetaJ == 1 
+%                 TmpTransTheta0(1, thetaJ) = TmpTransTheta1(1, thetaJ) - Alpha * FinalSum / m;
+%             else
+%                 TmpTransTheta0(1, thetaJ) = TmpTransTheta1(1, thetaJ) - Alpha * FinalSum / m - lambda * TmpTransTheta1(1, thetaJ) / m;
+%             end    
+%         end
+%         
+%     end
+%     
+%      all_theta(i, :) = TmpTransTheta0';
         
-        TmpTransTheta1 = TmpTransTheta0;
-        for thetaJ = 1:ThetaJParaCount
-            FinalSum = 0;
-            for example = 1:m
-                TmpHx = 0;
-                for thetaInsideJ = 1:ThetaJParaCount
-                    TmpHx = TmpHx + TmpTransTheta1(1, thetaInsideJ) * TransX(thetaInsideJ, example);
-                end
-                gHx =  1 / (1 + exp(-TmpHx)) ;
-                FinalSum = FinalSum + (gHx - y(example, 1 )) * X(example, thetaJ) ;
-            end
-            
-            if thetaJ == 1 
-                TmpTransTheta0(1, thetaJ) = TmpTransTheta1(1, thetaJ) - Alpha * FinalSum / m;
-            else
-                TmpTransTheta0(1, thetaJ) = TmpTransTheta1(1, thetaJ) - Alpha * FinalSum / m - lambda * TmpTransTheta1(1, thetaJ) / m;
-            end    
-        end  
-    end
-    
-     all_theta(i, :) = TmpTransTheta0';
-    
-     
-
-    
 end
 
 
-
- %     options = optimset('GradObj', 'on', 'MaxIter', 50);
-% 
-%     % Run fmincg to obtain the optimal theta
-%     % This function will return theta and the cost 
-%     [theta] = ...
-%         fmincg (@(t)(lrCostFunction(t, X, (y == c), lambda)), ...
-%                 initial_theta, options);
-%
-% 
-% for i = 1:num_labels
-%     [theta] = ...
-%         fmincg(@(t)(lrCostFunction(t,X,(y == i),lambda)), ...
-%             initial_theta, options);
-%     all_theta(i,:) = theta';
-% end
+initial_theta = zeros(n + 1, 1);
+options = optimset('GradObj', 'on', 'MaxIter', 50);
+for i = 1:num_labels
+    [theta] = ...
+        fmincg(@(t)(lrCostFunction(t,X,(y == i),lambda)), ...
+        initial_theta, options);
+    all_theta(i,:) = theta';
+end
 
 
 
