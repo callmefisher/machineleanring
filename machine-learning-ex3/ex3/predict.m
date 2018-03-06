@@ -22,6 +22,8 @@ X = [ones(m, 1) X];
 %       can use max(A, [], 2) to obtain the max for each row.
 %
 
+
+% 注意每个网络层(输入层和隐藏层),都要有bias unit
 for i = 1:m 
     
     A1 =    X(i,:);
