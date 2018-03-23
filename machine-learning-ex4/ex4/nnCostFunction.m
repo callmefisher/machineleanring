@@ -24,7 +24,7 @@ Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):en
 
 % Setup some useful variables 样本数 
 m = size(X, 1);
-         
+X = [ones(m, 1), X];         
 % You need to return the following variables correctly 
 J = 0;
 Theta1_grad = zeros(size(Theta1)); % Theta1: 25 * (400 + 1)
@@ -39,25 +39,38 @@ Theta2_grad = zeros(size(Theta2)); % Theta2: 10 * (25 + 1)
 %         cost function computation is correct by verifying the cost
 %         computed in ex4.m
 %
+
 for i = 1: m
-    BiasUnitA1 = [1 X(i, :)];
-    SigTheta1 = sigmoid( BiasUnitA1 * Theta1');
-    G2 = y(i) *  log( SigTheta1) + (1 - y(i)) * log(1 - SigTheta1);
-    BiasUnitA2 = [1, G2];
-    SigTheta2 = sigmoid( BiasUnitA2 * Theta2');
-    J = J +  y(i) *  log( SigTheta2) + (1 - y(i)) * log(1 - SigTheta2)
+   %%%%%%%%前向算法
+    %%第一层
+    A1 =  X(i, :);
+     %% 第二层
+     Z2 = Theta1 * A1';
+    A2 = [1 ;sigmoid(Z2)];
+    %% 第三层
+    A3 = sigmoid( Theta2 * A2);
+    
+    Ypossibility = zeros(num_labels, 1);   %% 取值要么为0， 要么为1
+    Ypossibility(y(i)) = 1;
+    
+    %% 计算costfunction
+    J = J + sum(Ypossibility .* log(A3) + (1 - Ypossibility ) .* log( 1- A3));
+    
+    
+     % 后向传播;
+    delta3 = A3 - Ypossibility;                                            % delta3 is a 10x1 column vector
+    delta2 = Theta2(:,2:end)' * delta3 .* sigmoidGradient(Z2);  % delta2 is a 25x1 column vector  delta(2)=(Theta(2))' * delta3(3)?g′(z(2))
+    Theta1_grad = Theta1_grad + delta2 * A1;
+    Theta2_grad = Theta2_grad + delta3 * A2';
+    
+    
     
 end
 
 J = -J / m;
 
-
-
-
-
-
-
-
+Theta1_grad =  Theta1_grad/ m ;
+Theta2_grad =  Theta2_grad/ m ;
 
 % Part 2: Implement the backpropagation algorithm to compute the gradients
 %         Theta1_grad and Theta2_grad. You should return the partial derivatives of
@@ -74,6 +87,14 @@ J = -J / m;
 %               over the training examples if you are implementing it for the 
 %               first time.
 %
+
+TmpTheta1 = Theta1(:, 2:end ) .^ 2;   %%  %% 正则化要去掉偏置单元, 25 * 401 ==> 25 * 400
+
+TmpTheta2 = Theta2(:, 2:end    ) .^ 2;
+
+J = J + lambda * (sum(TmpTheta1(:)) + sum(TmpTheta2(:))  ) / (2 * m);
+
+
 % Part 3: Implement regularization with the cost function and gradients.
 %
 %         Hint: You can implement this around the code for
@@ -82,13 +103,13 @@ J = -J / m;
 %               and Theta2_grad from Part 2.
 %
 
+ %% 后向传播正则化，也要去除偏置单元
 
+Theta1(:, 1) = 0;
+Theta2(:, 1) = 0;
 
-
-
-
-
-
+Theta1_grad =  Theta1_grad + (lambda * Theta1  )/ m ;
+Theta2_grad =  Theta2_grad + (lambda * Theta2  )/ m ;
 
 
 

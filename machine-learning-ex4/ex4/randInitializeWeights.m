@@ -21,9 +21,9 @@ W = zeros(L_out, 1 + L_in);
 
 
 
+theta = 0.01
 
-
-
+W = rand(L_out, 1 + L_in) * 2 * theta - theta;
 
 
 
